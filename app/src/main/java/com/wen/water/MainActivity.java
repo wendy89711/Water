@@ -1,5 +1,6 @@
 package com.wen.water;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void button() {
-        if (!TextUtils.isEmpty(edMonth.getText().toString())) {
+        if (!TextUtils.isEmpty(edMonth.getText().toString()) && isNext == false) {
             float m = Float.parseFloat(edMonth.getText().toString());
             if (m >= 1 && 10 >= m) {
                 money = (float) ((m*7.35));
@@ -56,9 +57,30 @@ public class MainActivity extends AppCompatActivity {
             } else if (m >= 51) {
                 money = (float)((m*12.075)-110.25);
             }
+            Intent intent = new Intent(this,ResultActivity.class);
+            intent.putExtra("Money",money);
+            startActivity(intent);
+        } if (!TextUtils.isEmpty(edMonth.getText().toString()) && isNext == true) {
+            float m = Float.parseFloat(edMonth.getText().toString());
+            if (m >= 1 && 20 >= m) {
+                money = (float) ((m*7.35));
+            } else if (m >= 21 && 60 >= m) {
+                money = (float)((m*9.45)-42);
+            } else if (m >= 61 && 100 >= m) {
+                money = (float)((m*11.55)-168);
+            } else if (m >= 101) {
+                money = (m*12.075f)-220.5f;
+            }
+            Intent intent = new Intent(this,ResultActivity.class);
+            intent.putExtra("Money",money);
+            startActivity(intent);
+        } if (edMonth.length() == 0) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("錯誤")
+                    .setMessage("無法計算")
+                    .setPositiveButton("OK",null)
+                    .show();
         }
-        Intent intent = new Intent(this,ResultActivity.class);
-        intent.putExtra("Money",money);
-        startActivity(intent);
+
     }
 }
